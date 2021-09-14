@@ -12,6 +12,7 @@ export default class approvedFoodList extends Component {
         this.state = {
             search: '',
             food: mockFoodItems.foodItem,
+            filterData: []
 
         }
     };
@@ -22,13 +23,18 @@ export default class approvedFoodList extends Component {
     //     this.setState({ food: data.data })
     // }
     updateSearch = (search) => {
-        this.setState({ search });
+        let filterData = this.state.food.filter(function (item) {
+            return (
+                (item.title.toLowerCase().includes(search.toLowerCase()))
+            )
+        })
+        this.setState({ search, filterData });
+        console.log(this.state.filterData, 'Hello')
 
     };
 
     render() {
-        const { food } = this.state
-        console.log(mockFoodItems.foodItem[0].data[0], 'null')
+        const { food, filterData, search } = this.state
         return (
             <View style={styles.container}>
                 <View style={styles.rowHeader}>
@@ -45,12 +51,12 @@ export default class approvedFoodList extends Component {
                     placeholder="Try searching fat, sauces names..."
                     placeholderTextColor={'#C5CBD2'}
                     onChangeText={this.updateSearch}
-                    value={this.state.search}
+                    value={search}
                     containerStyle={styles.searchBox}
                     inputContainerStyle={styles.searchTxt}
                 />
                 <FlatList
-                    data={food}
+                    data={filterData.length > 0 ? filterData : food}
                     renderItem={({ item: food }) => <CategoryRow food={food} />}
                     keyExtractor={(food) => food.id}
                 />

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native'
 import Collapsible from 'react-native-collapsible'
 import Icon from 'react-native-vector-icons/AntDesign'
 
@@ -7,10 +7,23 @@ export default function CategoryRow({ food }) {
 
     const [isToggled, setIsToggled] = React.useState(true);
     const toggle = React.useCallback(
-        () => setIsToggled(!isToggled),
-        [isToggled, setIsToggled],
+        () => setIsToggled(!isToggled)
+    );
+    console.log(food.data, 'Bye')
+
+    const renderItem = ({ item }) => (
+        <View style={styles.dropDown}>
+            <Text>
+                {item.title}
+            </Text>
+        </View>
     );
 
+    const Item = ({ title }) => (
+        <View style={styles.item}>
+            <Text style={styles.title}>{food.data.title}</Text>
+        </View>
+    );
     return (
         <View style={styles.container}>
             <TouchableOpacity style={styles.headerSection}
@@ -28,11 +41,11 @@ export default function CategoryRow({ food }) {
                 </View>
             </TouchableOpacity>
             <Collapsible collapsed={isToggled}  >
-                <View style={styles.dropDown}>
-                    <Text>
-                        {food.data[0].title}
-                    </Text>
-                </View>
+                <FlatList
+                    data={food.data}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                />
             </Collapsible>
         </View >
     );
@@ -75,12 +88,11 @@ const styles = StyleSheet.create({
     dropDown: {
         backgroundColor: 'white',
         marginHorizontal: 15,
-        padding: '2%',
+        padding: 8,
         paddingLeft: '4%',
-        borderBottomLeftRadius: 8,
-        borderBottomRightRadius: 8,
         borderTopWidth: 1,
-        borderTopColor: '#EAE9F0'
+        borderTopColor: '#EAE9F0',
+        borderBottomEndRadius: 8,
     }
 
 });

@@ -15,10 +15,6 @@ export default {
                 },
                 {
                     "id": 3,
-                    "title": "abcer"
-                },
-                {
-                    "id": 4,
                     "title": "rrtrt"
                 }
             ]
